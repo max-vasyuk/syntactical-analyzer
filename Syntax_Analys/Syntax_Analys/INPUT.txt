@@ -1,2 +1,1 @@
-bG3t è2 	t;=
-bG3t è2 	t;=
+if Cond then samp:=func3(id1) else proc(-32);

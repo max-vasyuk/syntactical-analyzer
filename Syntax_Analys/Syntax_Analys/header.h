@@ -6,8 +6,8 @@
 #include <string>
 using namespace std;
 
-string func_Translit(string buffer, int buf_length);
-void func_Leks();
+string func_Translit(string);
+string func_Leks(string);
 void func_KeyWordIdent();
 void func_Syntax();
 

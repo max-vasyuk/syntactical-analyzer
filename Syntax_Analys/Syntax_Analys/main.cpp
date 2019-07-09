@@ -6,7 +6,6 @@ int main()
 
 	string input_text = "";			// весь считанный из файла текст
 	char result[10] = "ACCEPT";		// массив символов примет в итоге одно из значений (ACCEPT или REJECT)
-	unsigned int buf_length = 0;	// длина строки
 
 	// считываем входные данные из файла "INPUT.txt"
 	fstream file_input;
@@ -24,17 +23,16 @@ int main()
 	// закрываем файл
 	file_input.close();
 
-	// определяем длину строки
-	buf_length = input_text.size();
-
 	// предварительный вывод строки в консоль
 	cout << "Cодержимое файла:\n" << input_text << "\n\n";
 
 	// блок транслитерации
-	cout << "Блок транслитерации:\n" << func_Translit(input_text, buf_length) << "\n\n";
+	string translit_result = func_Translit(input_text);
+	cout << "Блок транслитерации:\n" << translit_result << "\n\n";
 
 	// лексический блок
-	func_Leks();
+	string leks_result = func_Leks(translit_result);
+	cout << "Лексический блок:\n" << leks_result << "\n\n";
 
 	// блок идентификации ключевых слов
 	func_KeyWordIdent();
