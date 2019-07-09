@@ -16,20 +16,23 @@ string func_Translit(string buffer, int buf_length)
 	// если совпадений не было, присваиваем символу
 	// статус "ОШИБКА"
 	for (int i = 0; i < buf_length; i++){
+		string cur_string = "(";
+		cur_string.push_back(buffer[i]);
 		switch (buffer[i])
 		{
-			case ' ': checker.append("ПРОБЕЛ "); break;
-			case ';': checker.append("ТЧКЗПТ "); break;
-			case '=': checker.append("РАВНО "); break;
-			case '\n': checker.append("НВСТРК "); break;
+		case ' ': cur_string.append(",ПРОБЕЛ)"); break;
+			case ';': cur_string.append(",ТЧКЗПТ)"); break;
+			case '=': cur_string.append(",РАВНО)"); break;
 			default:
 				if (buffer[i] >= 'A' && buffer[i] <= 'Z' || buffer[i] >= 'a' && buffer[i] <= 'z')
-					checker.append("БУКВА ");
+					cur_string.append(",БУКВА)");
 				else if (buffer[i] >= '0' && buffer[i] <= '9')
-					checker.append("ЦИФРА ");
-				else 
-					checker.append("ОШИБКА ");
+					cur_string.append(",ЦИФРА)");
+				else cur_string.append(",ОШИБКА)");
 		}
+		if (i != buf_length - 1)
+			cur_string.append(", ");
+		checker.append(cur_string);
 	}
 	return checker;	// возвращаем полученные лексеммы далее в работу
 }
