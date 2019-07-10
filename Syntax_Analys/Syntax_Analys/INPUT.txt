@@ -1,1 +1,1 @@
-if Cond then samp:=func3(id1) else proc(-32);
+if Cond then samp:=func3(id1) else proc(2);
