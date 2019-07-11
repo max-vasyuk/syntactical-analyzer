@@ -7,8 +7,11 @@
 #include <vector>
 using namespace std;
 
-string func_Translit(string);
-string func_Leks(string);
+// структура для хранения промежуточных результатов анализа (токенов)
+struct Token { string input_string, leks; };
+
+std::vector<Token> func_Translit(string);
+std::vector<Token> func_Leks(std::vector<Token>);
 void func_KeyWordIdent();
 void func_Syntax();
 

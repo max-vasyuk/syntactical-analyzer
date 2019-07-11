@@ -3,46 +3,21 @@
 
 // func_Leks - Лексический блок
 //________________________________________________________________________________________________________
-// ВХОД:  string translit_result - строка после транслитерации
+// ВХОД:  vector<Token> translit_result - массив кортежей (символ, класс) после транслитерации
 //________________________________________________________________________________________________________
-// ВЫХОД: string - результат лексического анализа
+// ВЫХОД: vector<Token> - результат лексического анализа - кортежи вида (строка, класс языка)
 //________________________________________________________________________________________________________
-string func_Leks(string translit_result) {
+std::vector<Token> func_Leks(std::vector<Token> translit_result) {
 	// переменные для разбора результатов транслитерации
 	char text[80];
 	string leks[80];
-	// результат транслитерации
-	int length = parse_translit_result(translit_result, text, leks);
-	// вызов функции анализатора
-	return func_analyze(text, leks, length);
-}
-
-// parse_translit_result - функция для распознавания результатов транслитерации
-//________________________________________________________________________________________________________
-// ВХОД: string translit_result - строка после транслитерации
-//		 char text[] - распознаваемая строка (переменная для записи)
-//       string tr_keys[] - лексемы транслитерации (переменная для записи)
-//________________________________________________________________________________________________________
-// ВЫХОД: int - длина распознаваемой строки
-//________________________________________________________________________________________________________
-int parse_translit_result(string translit_result, char text[], string tr_keys[]) {
-	// индекс рассматриваемого символа, индекс текущего символа в строке результата транслитерации
-	int ind = 0, cur = 1;
-
-	// цикл по строке с результатом транслитерации для сохранения лексем
-	while (cur < translit_result.size()) {
-		// запоминаем рассматриваемый символ
-		text[ind] = translit_result[cur];
-		// циклом считываем лексему (от запятой до скобки)
-		int i = cur + 2;
-		for (; translit_result[i] != ')'; i++)
-			tr_keys[ind].push_back(translit_result[i]);
-		// переход к следующему символу
-		cur = i + 4;
-		ind++;
+	// результат транслитерации запишем в переменные text и leks
+	for (int i = 0; i < translit_result.size(); i++) {
+		text[i] = translit_result[i].input_string[0];
+		leks[i] = translit_result[i].leks;
 	}
-	// вернем положение последнего символа (фактически - длину)
-	return ind;
+	// вызов функции анализатора
+	return func_analyze(text, leks, translit_result.size());
 }
 
 // func_analyze - функция для распознавания результатов транслитерации
@@ -53,7 +28,7 @@ int parse_translit_result(string translit_result, char text[], string tr_keys[])
 //________________________________________________________________________________________________________
 // ВЫХОД: string - строка с результатом лексического анализа
 //________________________________________________________________________________________________________
-string func_analyze(char text[], string tr_keys[], int length) {
+std::vector<Token> func_analyze(char text[], string tr_keys[], int length) {
 	// текущее состояние - начало; индекс текущего символа - 0
 	int curState = BEGIN, ind = 0;
 	// строка, в которую будет записываться результат
@@ -89,14 +64,9 @@ string func_analyze(char text[], string tr_keys[], int length) {
 		if (tkn.input_string != "КОНЕЦ")
 			tokens.push_back(tkn);
 	}
-	// сохраняем результаты в строку
-	for (int i = 0; i < tokens.size(); i++) {
-		result_string.append("(" + tokens[i].input_string + ", " + tokens[i].leks + ")");
-		if (tokens[i].leks == "ОШИБКА") break;
-		if (i != tokens.size() - 1) result_string.append(", ");
-	}
+
 	// возврат результата лексического анализа
-	return result_string;
+	return tokens;
 }
 
 // create_token - функция для создания токена распознавания

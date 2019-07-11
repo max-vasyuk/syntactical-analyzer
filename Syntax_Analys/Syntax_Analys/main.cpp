@@ -22,31 +22,44 @@ int main() {
 
 	// предварительный вывод строки в консоль
 	cout << "Cодержимое файла:\n" << input_text << "\n\n";
+	// длина строки
+	int length = input_text.size();
 
-	// блок транслитерации
-	string translit_result = func_Translit(input_text);
-	cout << "Блок транслитерации:\n" << translit_result << "\n\n";
-	size_t pos = translit_result.find("ОШИБКА");
-	if (pos != string::npos)
-		result = "REJECT";
+	// блок транслитерации: вызов и вывод результата на экран
 
-	// лексический блок
-	if (result != "REJECT") {
-		string leks_result = func_Leks(translit_result);
-		cout << "Лексический блок:\n" << leks_result << "\n\n";
-		pos = leks_result.find("ОШИБКА");
-		if (pos != string::npos)
-			result = "REJECT";
+	cout << "Блок транслитерации:\n";
+	std::vector<Token> translit_result = func_Translit(input_text);
+	for (int i = 0; i < length; i++) {
+		cout << "(" << translit_result[i].input_string << ", " << translit_result[i].leks << ")";
+		if (i != length - 1) cout << ", ";
+		if (translit_result[i].leks == "ОШИБКА") result = "REJECT";
 	}
-
+	
+	// лексический блок
+	cout << "\n\nЛексический блок:\n";
+	if (result != "REJECT") {
+		std::vector<Token> leks_result = func_Leks(translit_result);
+		length = leks_result.size();
+		for (int i = 0; i < leks_result.size(); i++) {
+			cout << "(" << leks_result[i].input_string << ", " << leks_result[i].leks << ")";
+			if (i != length - 1) cout << ", ";
+			if (leks_result[i].leks == "ОШИБКА") {
+				result = "REJECT";
+				break;
+			}
+		}
+	}
+	
 	// блок идентификации ключевых слов
+	cout << "\n\nБлок идентификации ключевых слов:\n";
 	if (result != "REJECT") {
 		func_KeyWordIdent();
 	}
 
 	// синтаксический блок
+	cout << "\n\nСинтаксический блок:\n";
 	func_Syntax();
-
+	
 	// открываем файл "OUTPUT.txt" для записи результата синтаксического анализа строки (ACCEPT или RELECT)
 	file_input.open("OUTPUT.txt", ios::out);
 
