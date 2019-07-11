@@ -391,7 +391,7 @@ Token state_name1(char symb[], string value[], int* curState, int* ind, string c
 			// смена состояния и возврат результата
 			*curState = ID3;
 			(*ind)++;
-			return create_token(curString, "ПОДПРОГРАММА");
+			return create_token(curString, "ИДЕНТИФИКАТОР");
 		}
 	}
 	// иначе ОШИБКА
@@ -543,7 +543,7 @@ Token state_name2(char symb[], string value[], int* curState, int* ind, string c
 			// смена состояния и возврат результата
 			*curState = SIGN_INT;
 			(*ind)++;
-			return create_token(curString, "ПОДПРОГРАММА");
+			return create_token(curString, "ИДЕНТИФИКАТОР");
 		}
 	}
 	// иначе ОШИБКА
