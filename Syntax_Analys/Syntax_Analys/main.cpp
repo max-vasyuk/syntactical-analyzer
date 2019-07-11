@@ -1,12 +1,11 @@
 #include "header.h"
 
-int main()
-{
+int main() {
 	setlocale(LC_ALL, "russian");
-
-	string input_text = "";			// весь считанный из файла текст
-	char result[10] = "ACCEPT";		// массив символов примет в итоге одно из значений (ACCEPT или REJECT)
-
+	// весь считанный из файла текст
+	string input_text = "";
+	// массив символов примет в итоге одно из значений (ACCEPT или REJECT)
+	string result = "ACCEPT";
 	// считываем входные данные из файла "INPUT.txt"
 	fstream file_input;
 	file_input.open("INPUT.txt", ios::in);
@@ -16,10 +15,8 @@ int main()
 		cout << "Ошибка. Файл \"INPUT.txt\" не найден," << endl;
 		return -1;
 	}
-	
 	// считываем из файла исходные данные
 	getline(file_input, input_text);
-
 	// закрываем файл
 	file_input.close();
 
@@ -29,13 +26,23 @@ int main()
 	// блок транслитерации
 	string translit_result = func_Translit(input_text);
 	cout << "Блок транслитерации:\n" << translit_result << "\n\n";
+	size_t pos = translit_result.find("ОШИБКА");
+	if (pos != string::npos)
+		result = "REJECT";
 
 	// лексический блок
-	string leks_result = func_Leks(translit_result);
-	cout << "Лексический блок:\n" << leks_result << "\n\n";
+	if (result != "REJECT") {
+		string leks_result = func_Leks(translit_result);
+		cout << "Лексический блок:\n" << leks_result << "\n\n";
+		pos = leks_result.find("ОШИБКА");
+		if (pos != string::npos)
+			result = "REJECT";
+	}
 
 	// блок идентификации ключевых слов
-	func_KeyWordIdent();
+	if (result != "REJECT") {
+		func_KeyWordIdent();
+	}
 
 	// синтаксический блок
 	func_Syntax();
@@ -50,7 +57,7 @@ int main()
 	}
 
 	// записали результат работы в файл "OUTPUT.txt" и закрыли его
-	file_input.write(result, sizeof(result));
+	file_input.write(result.c_str(), sizeof(result));
 	file_input.close();
 	return 0;
 }
