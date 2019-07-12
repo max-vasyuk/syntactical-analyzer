@@ -1,5 +1,6 @@
 #ifndef LEKS_H
 #define LEKS_H
+
 #include "header.h"
 
 // перечисление состояний конечного автомата
@@ -8,8 +9,7 @@ enum leks_states {
 	OBRACKET1, ID3, CBRACKET1, ELSE, SPACE5, NAME2, OBRACKET2, SIGN_INT, CBRACKET2, SPACE6, SEMICOLON
 };
 
-std::vector<Token> func_analyze(char[], string[], int);
-Token create_token(string, string);
+vector<Token> func_analyze(char[], string[], int);
 Token state_begin(char[], string[], int*, int*);
 Token state_if(char[], string[], int*, int*, string = "");
 Token state_space1(char[], string[], int*, int*);

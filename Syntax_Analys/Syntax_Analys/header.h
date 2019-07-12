@@ -5,14 +5,24 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cctype> 
+#include <cstring> 
+#include <algorithm>
 using namespace std;
 
 // структура для хранения промежуточных результатов анализа (токенов)
 struct Token { string input_string, leks; };
+vector<Token> func_Translit(string);
+vector<Token> func_Leks(vector<Token>);
+vector<Token> func_KeyWordIdent(vector<Token>);
+string func_Syntax(vector<Token>);
 
-std::vector<Token> func_Translit(string);
-std::vector<Token> func_Leks(std::vector<Token>);
-void func_KeyWordIdent();
-void func_Syntax();
+// функция создания токена
+inline Token create_token(string str, string value){
+	Token tkn;
+	tkn.input_string = str;
+	tkn.leks = value;
+	return tkn;
+}
 
 #endif

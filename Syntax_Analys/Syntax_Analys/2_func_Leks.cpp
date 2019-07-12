@@ -1,4 +1,3 @@
-#include "header.h"
 #include "leks.h"
 
 // func_Leks - Лексический блок
@@ -11,11 +10,13 @@ std::vector<Token> func_Leks(std::vector<Token> translit_result) {
 	// переменные для разбора результатов транслитерации
 	char text[80];
 	string leks[80];
+	int i;
 	// результат транслитерации запишем в переменные text и leks
-	for (int i = 0; i < translit_result.size(); i++) {
+	for (i = 0; i < translit_result.size(); i++) {
 		text[i] = translit_result[i].input_string[0];
 		leks[i] = translit_result[i].leks;
 	}
+	text[i] = '\0';
 	// вызов функции анализатора
 	return func_analyze(text, leks, translit_result.size());
 }
@@ -67,20 +68,6 @@ std::vector<Token> func_analyze(char text[], string tr_keys[], int length) {
 
 	// возврат результата лексического анализа
 	return tokens;
-}
-
-// create_token - функция для создания токена распознавания
-//________________________________________________________________________________________________________
-// ВХОД: string str - строка
-//       string value - соответствующее ей значение
-//________________________________________________________________________________________________________
-// ВЫХОД: Token - токен, содержащий str, value
-//________________________________________________________________________________________________________
-Token create_token(string str, string value) {
-	Token tkn;
-	tkn.input_string = str;
-	tkn.leks = value;
-	return tkn;
 }
 
 // state_begin - функция для состояния "Начало"
@@ -161,7 +148,7 @@ Token state_space1(char symb[], string value[], int* curState, int* ind) {
 			return state_space1(symb, value, curState, ind);
 		}
 		// получена БУКВА
-		if (value[*ind] == "БУКВА") {
+		if (value[*ind] == "БУКВА" || value[*ind] == "ПОДЧЕРК") {
 			// смена состояния, вызов функции считывания идентификатора
 			*curState = ID1;
 			return state_id1(symb, value, curState, ind);
@@ -427,7 +414,8 @@ Token state_space5(char symb[], string value[], int* curState, int* ind) {
 		if (value[*ind] == "ТЧКЗПТ") {
 			// смена состояния и вызов функции для ТЧКЗПТ
 			*curState = SEMICOLON;
-			return state_semicolon(symb, value, curState, ind);
+			(*ind)++;
+			return create_token(";", "ТЧКЗПТ");
 		}
 		// получена БУКВА
 		if (value[*ind] == "БУКВА") {

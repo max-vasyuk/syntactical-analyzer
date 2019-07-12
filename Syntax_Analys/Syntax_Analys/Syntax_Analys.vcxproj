@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="header.h" />
     <ClInclude Include="leks.h" />
+    <ClInclude Include="syntax.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3_func_KeyWordIdent.cpp" />
